@@ -6,11 +6,13 @@
 #include <unordered_map>
 using namespace std;
 
-class DecisionTree {
+class decisionTree {
 public:
-    DecisionTree(int maxDepth = 5, int minSamples = 2);
+    decisionTree(int maxDepth = 5, int minSamples = 2);
     void train(const vector<vector<float>>& data, const vector<string>& labels);
     string predict(const vector<float>& input) const;
+    
+
 
 private:
     struct Node {
@@ -37,4 +39,6 @@ private:
                       vector<vector<float>>& rightData, vector<string>& rightLabels) const;
     string predictSample(Node* node, const vector<float>& input) const;
     void freeTree(Node* node);
+
+
 };

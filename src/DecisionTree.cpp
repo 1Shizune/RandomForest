@@ -1,13 +1,13 @@
-#include "DecisionTree.h"
+#include "decisionTree.h"
 
-DecisionTree::DecisionTree(int maxDepth, int minSamples)
+decisionTree::decisionTree(int maxDepth, int minSamples)
     : root(nullptr), maxDepth(maxDepth), minSamples(minSamples) {}
 
-void DecisionTree::train(const vector<vector<float>>& data, const vector<string>& labels) {
+void decisionTree::train(const vector<vector<float>>& data, const vector<string>& labels) {
     root = buildTree(data, labels, 0);
 }
 
-DecisionTree::Node* DecisionTree::buildTree(const vector<vector<float>>& data,
+decisionTree::Node* decisionTree::buildTree(const vector<vector<float>>& data,
                                             const vector<string>& labels, int depth) {
     Node* node = new Node();
 
@@ -61,7 +61,7 @@ DecisionTree::Node* DecisionTree::buildTree(const vector<vector<float>>& data,
     return node;
 }
 
-float DecisionTree::giniImpurity(const vector<string>& labels) const {
+float decisionTree::giniImpurity(const vector<string>& labels) const {
     unordered_map<string, int> counts;
     for (const auto& label : labels) {
         counts[label]++;
@@ -76,7 +76,7 @@ float DecisionTree::giniImpurity(const vector<string>& labels) const {
     return impurity;
 }
 
-string DecisionTree::majorityClass(const vector<string>& labels) const {
+string decisionTree::majorityClass(const vector<string>& labels) const {
     unordered_map<string, int> count;
     for (const string& label : labels)
         count[label]++;
@@ -92,7 +92,7 @@ string DecisionTree::majorityClass(const vector<string>& labels) const {
     return majority;
 }
 
-void DecisionTree::splitDataset(const vector<vector<float>>& data, const vector<string>& labels,
+void decisionTree::splitDataset(const vector<vector<float>>& data, const vector<string>& labels,
     int feature, float threshold,
     vector<vector<float>>& leftData, vector<string>& leftLabels,
     vector<vector<float>>& rightData, vector<string>& rightLabels) const {
@@ -108,11 +108,11 @@ void DecisionTree::splitDataset(const vector<vector<float>>& data, const vector<
     }
 }
 
-string DecisionTree::predict(const vector<float>& input) const {
+string decisionTree::predict(const vector<float>& input) const {
     return predictSample(root, input);
 }
 
-string DecisionTree::predictSample(Node* node, const vector<float>& input) const {
+string decisionTree::predictSample(Node* node, const vector<float>& input) const {
     if (node->isLeaf)
         return node->label;
 
@@ -122,7 +122,7 @@ string DecisionTree::predictSample(Node* node, const vector<float>& input) const
         return predictSample(node->right, input);
 }
 
-void DecisionTree::freeTree(Node* node) {
+void decisionTree::freeTree(Node* node) {
     if (!node) return;
     freeTree(node->left);
     freeTree(node->right);
