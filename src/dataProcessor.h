@@ -6,17 +6,27 @@
 using namespace std;
 
 class dataProcessor {
-private:
-    std::vector<float> globalMedians;
-    std::vector<float> healthyMedians;
-    std::vector<float> atRiskMedians;
-
-    std::string classifyUserHealth(const std::vector<float>& rawData); // New method
-
 public:
-    dataProcessor(const std::vector<std::vector<float>>& data, const std::vector<std::string>& labels);
+    dataProcessor(const vector<vector<float>>& data, const vector<string>& labels);
+    
+    vector<float> cleanData(const vector<float>& rawData);
+    vector<float> cleanData(const vector<float>& rawData, const string& strategy);
+    vector<float> normalizeData(const vector<float>& cleanedData);
+    string classifyUserHealth(const vector<float>& rawData);
+    
+    
+    vector<tuple<int, float, string>> getLastReplacements() const; //Expose replacements for logging
 
-    std::vector<float> cleanData(const std::vector<float>& rawData);
-    std::vector<float> normalizeData(const std::vector<float>& cleanedData);
+private:
+    vector<float> globalMedians;
+    vector<float> healthyMedians;
+    vector<float> atRiskMedians;
+
+    
+    vector<tuple<int, float, string>> lastReplacements; //Logging what values were replaced
+
+    static const vector<float> MIN_VALS;
+    static const vector<float> MAX_VALS;
 };
+
 #endif

@@ -7,8 +7,7 @@ void decisionTree::train(const vector<vector<float>>& data, const vector<string>
     root = buildTree(data, labels, 0);
 }
 
-decisionTree::Node* decisionTree::buildTree(const vector<vector<float>>& data,
-                                            const vector<string>& labels, int depth) {
+decisionTree::Node* decisionTree::buildTree(const vector<vector<float>>& data,const vector<string>& labels, int depth) {
     Node* node = new Node();
 
     if (depth >= maxDepth || labels.size() <= minSamples || giniImpurity(labels) == 0.0f) {

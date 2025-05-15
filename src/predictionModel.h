@@ -3,17 +3,18 @@
 
 #include <vector>
 #include <string>
-#include "decisionTree.h"  // Include decisionTree for model training
+#include "decisionTree.h" 
+using namespace std;
 
 class predictionModel {
 private:
-    std::vector<decisionTree> forest;
+    vector<decisionTree> forest;
     int nTrees;
 
 public:
     predictionModel(int numTrees = 10);
-    void trainModel(const std::vector<std::vector<float>>& data, const std::vector<std::string>& labels);
-    std::string predict(const std::vector<float>& inputData);
+    void trainModel(const vector<vector<float>>& data, const vector<string>& labels);
+    string predict(const vector<float>& inputData);
 };
 
 #endif

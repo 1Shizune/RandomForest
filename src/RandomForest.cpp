@@ -5,19 +5,19 @@
 #include <ctime>
 #include <vector>
 
-// Remove the duplicate constructor definition from here
+using namespace std;
 
 predictionModel::predictionModel(int numTrees) : nTrees(numTrees) {}
 
-void predictionModel::trainModel(const std::vector<std::vector<float>>& data, 
-                               const std::vector<std::string>& labels) {
+void predictionModel::trainModel(const vector<vector<float>>& data, 
+    const vector<string>& labels) {
     srand(time(0));
     for (int i = 0; i < nTrees; ++i) {
-        std::vector<std::vector<float>> sampleData;
-        std::vector<std::string> sampleLabels;
+        vector<vector<float>> sampleData;
+        vector<string> sampleLabels;
 
-        // Bootstrap sampling
-        for (size_t j = 0; j < data.size(); ++j) {
+        
+        for (size_t j = 0; j < data.size(); ++j) { //Bootstrap sampling
             int idx = rand() % data.size();
             sampleData.push_back(data[idx]);
             sampleLabels.push_back(labels[idx]);
@@ -29,14 +29,14 @@ void predictionModel::trainModel(const std::vector<std::vector<float>>& data,
     }
 }
 
-std::string predictionModel::predict(const std::vector<float>& inputData) {
-    std::map<std::string, int> voteCount;
+string predictionModel::predict(const vector<float>& inputData) {
+    map<string, int> voteCount;
     for (auto& tree : forest) {
-        std::string vote = tree.predict(inputData);
+        string vote = tree.predict(inputData);
         voteCount[vote]++;
     }
 
-    std::string finalPrediction;
+    string finalPrediction;
     int maxVotes = 0;
     for (auto& [label, count] : voteCount) {
         if (count > maxVotes) {

@@ -2,11 +2,12 @@
 #define RADARCHARTGENERATOR_H
 
 #include <vector>
+using namespace std;
 
 class radarChartGenerator {
 public:
     radarChartGenerator();
-    void generatorChart(std::vector<float>& userData, std::vector<float>& healthyData);
+    void generatorChart(vector<float>& userData, vector<float>& healthyData);
 };
 
 #endif

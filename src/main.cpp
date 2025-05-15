@@ -13,7 +13,7 @@ int main(int argc, char* argv[]) {
     vector<vector<float>> data;
     vector<string> labels;
 
-    loadDataset("Sleep_health_and_lifestyle_dataset.csv", data, labels);
+    loadDataset("src/Sleep_health_and_lifestyle_dataset.csv", data, labels);
     cout << "Loaded rows: " << data.size() << ", Labels: " << labels.size() << endl;
 
     dataProcessor processor(data, labels);
@@ -21,10 +21,10 @@ int main(int argc, char* argv[]) {
 
     vector<vector<float>> cleanedData;
     for (const auto& row : data) {
-        cleanedData.push_back(processor.cleanData(row));  // Use global medians
+        cleanedData.push_back(processor.cleanData(row));  // Clean missing data in the dataset
     }
 
-    vector<vector<float>> normalizedData;
+    vector<vector<float>> normalizedData; //Make values have a similar scale
     for (const auto& row : cleanedData) {
         normalizedData.push_back(processor.normalizeData(row));
     }
@@ -33,32 +33,48 @@ int main(int argc, char* argv[]) {
     cout << "Training model..." << endl;
     model.trainModel(normalizedData, labels);
 
-    vector<vector<float>> testInput = {
-        {0, 28, -1, 9.0, 60.0, 1.0, 0, 85.0, 8000}, 
-        {1, -1, 7.5, 7.0, -1, 3.0, 0, 70.0, 10000},
-        {1, 30, -1.0, 8.0, 60.0, 2.0, 0, 70.0, 9000},
-        {0, 45, 7.5, 9.0, 50.0, -1.0, 0, 68.0, 10000},
-        {1, 25, 8.0, 8.5, 75.0, 3.0, 0, -1.0, 12000}
-    };
+  char repeat;
+do {
+    vector<float> userInput(9);
+    cout << "\nPlease enter your sleep and lifestyle information below:\n";
 
-    vector<string> expected = {
-        "Not At Risk",
-        "At Risk",
-        "Not At Risk",
-        "Not At Risk",
-        "Not At Risk"
-    };
+    cout << "Gender (0 = Male, 1 = Female): ";
+    cin >> userInput[0];
 
-    cout << "Starting prediction on testInput..." << endl;
+    cout << "Age: ";
+    cin >> userInput[1];
 
-    for (size_t i = 0; i < testInput.size(); ++i) {
-        vector<float> cleaned = processor.cleanData(testInput[i]);  // No label used
-        vector<float> normalized = processor.normalizeData(cleaned);
+    cout << "Sleep Duration (hours): ";
+    cin >> userInput[2];
 
-        string pred = model.predict(normalized);
-        cout << "Sample " << i + 1 << " Prediction: " << pred
-             << " | Expected: " << expected[i] << endl;
-    }
+    cout << "Quality of Sleep (1-10): ";
+    cin >> userInput[3];
+
+    cout << "Physical Activity Level (minutes): ";
+    cin >> userInput[4];
+
+    cout << "Stress Level (1-10): ";
+    cin >> userInput[5];
+
+    cout << "BMI Category (0 = Normal, 1 = Overweight, 2 = Obese): ";
+    cin >> userInput[6];
+
+    cout << "Heart Rate (bpm): ";
+    cin >> userInput[7];
+
+    cout << "Daily Steps: ";
+    cin >> userInput[8];
+
+    vector<float> cleaned = processor.cleanData(userInput, "global");
+    vector<float> normalized = processor.normalizeData(cleaned);
+
+    string prediction = model.predict(normalized);
+    cout << "\n Prediction: You are \"" << prediction << "\" for sleep disorder risk.\n";
+
+    cout << "\nWould you like to test another person? (y/n): ";
+    cin >> repeat;
+
+} while (repeat == 'y' || repeat == 'Y');
 
     return 0;
 }
