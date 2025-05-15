@@ -1,0 +1,10 @@
+Gender,Age,Sleep Duration,Quality of Sleep,Physical Activity Level,Stress Level,BMI Category,Heart Rate,Daily Steps,Label
+1,28,6.2,6,60,8,0,75,10000,Not At Risk
+0,45,5.0,3,20,9,2,85,3000,At Risk
+1,32,8.0,8,80,3,0,65,12000,Not At Risk
+0,50,5.5,4,25,8,1,88,4000,At Risk
+1,25,7.5,7,70,4,0,70,11000,Not At Risk
+0,35,5.2,3,15,9,2,90,2500,At Risk
+1,30,7.8,7,65,4,0,72,9000,Not At Risk
+0,48,5.0,2,10,10,2,92,2000,At Risk
+1,29,7.0,6,60,5,0,70,8500,Not At Risk

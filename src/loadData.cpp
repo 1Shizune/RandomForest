@@ -12,8 +12,8 @@ unordered_map<string, int> bmiMap = {{"Normal", 0}, {"Overweight", 1}, {"Obese",
 unordered_map<string, int> disorderMap = {{"None", 0}, {"Sleep Apnea", 1}, {"Insomnia", 2}};
 
 void loadDataset(const string& filename,
-                 vector<vector<float>>& features,
-                 vector<string>& labels) {
+    vector<vector<float>>& features,
+    vector<string>& labels) {
     ifstream file(filename);
     string line;
 
@@ -69,8 +69,14 @@ void loadDataset(const string& filename,
         row.push_back(stof(token));
 
         
-        getline(ss, token, ','); // Sleep Disorder (label)
-        labels.push_back(token);
+        getline(ss, token, ','); // Sleep Disorder, binary classification
+        if (token == "None") {
+            labels.push_back("Not At Risk");
+        } 
+         else {
+            labels.push_back("At Risk");
+        }
+
 
         features.push_back(row);
     }
