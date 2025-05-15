@@ -2,25 +2,21 @@
 #define DATAPROCESSOR_H
 
 #include <vector>
-#include <string>  // ✅ Use lowercase "string", not <String>
+#include <string> 
 using namespace std;
 
 class dataProcessor {
 private:
-    vector<float> globalMedians;
-    vector<float> healthyMedians;
-    vector<float> atRiskMedians;
+    std::vector<float> globalMedians;
+    std::vector<float> healthyMedians;
+    std::vector<float> atRiskMedians;
+
+    std::string classifyUserHealth(const std::vector<float>& rawData); // New method
 
 public:
-    dataProcessor(const vector<vector<float>>& data, const vector<string>& labels);
+    dataProcessor(const std::vector<std::vector<float>>& data, const std::vector<std::string>& labels);
 
-    // ✅ Overload for training (with label context)
-    vector<float> cleanData(vector<float>& rawData, const string& label);
-
-    // ✅ Overload for prediction (no label)
-    vector<float> cleanData(const vector<float>& rawData);
-
-    vector<float> normalizeData(const vector<float>& cleanedData);
+    std::vector<float> cleanData(const std::vector<float>& rawData);
+    std::vector<float> normalizeData(const std::vector<float>& cleanedData);
 };
-
 #endif

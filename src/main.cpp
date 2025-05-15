@@ -33,7 +33,6 @@ int main(int argc, char* argv[]) {
     cout << "Training model..." << endl;
     model.trainModel(normalizedData, labels);
 
-    // 🔹 Step 5: Define test input
     vector<vector<float>> testInput = {
         {0, 28, -1, 9.0, 60.0, 1.0, 0, 85.0, 8000}, 
         {1, -1, 7.5, 7.0, -1, 3.0, 0, 70.0, 10000},
