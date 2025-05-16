@@ -12,7 +12,7 @@ string mapToRiskLabel(const string& label) {
     else return "At Risk";
 }
 
-void test_risk_prediction() { //test that decisionTree makes the correct prediction
+void test_risk_prediction() { //test that decisionTree makes the correct prediction given a toy dataset
     cout << " Running test_risk_prediction..." << endl;
 
     vector<vector<float>> data = {
@@ -79,7 +79,7 @@ void test_risk_prediction() { //test that decisionTree makes the correct predict
 }
 
 
-void test_invalid_input_handling_with_cleaning() { //Test that decisionTree and dataProcessor correctly deal with nonsensical data
+void test_invalid_input_handling_with_cleaning() { //Test that decisionTree and dataProcessor correctly deal with nonsensical and missing data
     cout << "\nRunning test_invalid_input_handling_with_cleaning..." << endl;
 
     vector<vector<float>> data = { //training data
@@ -107,9 +107,9 @@ void test_invalid_input_handling_with_cleaning() { //Test that decisionTree and 
     };
 
     
-    dataProcessor dp(data, labels); // Initialize dataProcessor with training data (builds medians etc)
+    dataProcessor dp(data, labels); //Initialize dataProcessor with training data (builds medians etc)
 
-    decisionTree tree(3, 1); // Train decision tree as normal
+    decisionTree tree(3, 1); //Train decision tree as normal
     tree.train(data, labels);
 
     struct InvalidTestCase {
@@ -138,10 +138,55 @@ void test_invalid_input_handling_with_cleaning() { //Test that decisionTree and 
         cout << "\nInvalid input handling test with cleaning complete.\n" << endl;
     }
 
+    void test_minimal_training_data() { //test the decision tree (predict) when there are a small amount of examples to look at
+    cout << "\nRunning test_minimal_training_data..." << endl;
+
+    vector<vector<float>> data = {
+        {0, 30, 6.5, 6.0, 40.0, 3.0, 0, 70.0, 8000},  //Not At Risk
+        {1, 45, 4.0, 3.0, 20.0, 8.0, 2, 90.0, 1500}   //At Risk
+    };
+
+    vector<string> labels = {"Not At Risk", "At Risk"};
+
+    decisionTree tree(1, 1);
+    tree.train(data, labels);
+
+    string prediction1 = tree.predict({0, 30, 6.5, 6.0, 40.0, 3.0, 0, 70.0, 8000});
+    string prediction2 = tree.predict({1, 45, 4.0, 3.0, 20.0, 8.0, 2, 90.0, 1500});
+
+    assert(prediction1 == "Not At Risk");
+    assert(prediction2 == "At Risk");
+
+    cout << "Passed minimal training test.\n";
+}
+
+    void test_input_stability() { //test input with small variations
+    cout << "\nRunning test_input_stability..." << endl;
+
+    vector<vector<float>> data = {
+        {0, 30, 7.0, 6.0, 50.0, 3.0, 0, 72.0, 8500},
+        {1, 29, 4.0, 3.0, 20.0, 8.0, 2, 90.0, 2000}
+    };
+
+    vector<string> labels = {"Not At Risk", "At Risk"};
+
+    decisionTree tree(2, 1);
+    tree.train(data, labels);
+
+    string pred1 = tree.predict({0, 30, 7.0, 6.0, 50.0, 3.0, 0, 72.0, 8500});
+    string pred2 = tree.predict({0, 30, 7.1, 6.0, 50.0, 3.0, 0, 72.0, 8500}); //slight variation
+
+    assert(pred1 == pred2);
+    cout << "Stable prediction passed.\n";
+}
+
 
 
 int main() {
     test_risk_prediction();
     test_invalid_input_handling_with_cleaning();
+    test_minimal_training_data();
+    test_input_stability();
+    
     return 0;
 }

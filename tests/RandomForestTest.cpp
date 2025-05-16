@@ -4,7 +4,7 @@
 
 using namespace std;
 
-void testPredictOnEmptyForest() { //Should output nothing
+void testPredictOnEmptyForest() { //Should output nothing, Try to get a prediction when the random forest is empty
     cout << "Running test: Predict on empty forest...\n";
 
     predictionModel model(5); // Create a model with 5 trees
@@ -20,7 +20,7 @@ void testPredictOnEmptyForest() { //Should output nothing
     cout << "Passed\n\n";
 }
  
-void testTrainWithEmptyData() { //Should output nothing
+void testTrainWithEmptyData() { //Should output nothing, Try to train the RF when the dataset is empty
     cout << "Running test: Train with empty data...\n";
 
     predictionModel model(5);
@@ -41,7 +41,7 @@ void testTrainWithEmptyData() { //Should output nothing
     cout << "Passed\n\n";
 }
 
-void testSmallDataset() { 
+void testSmallDataset() { //Train the model using a dataset that is small
     cout << "Running test: Small dataset training...\n";
 
     predictionModel model(3);  // 3 trees
@@ -72,7 +72,7 @@ void testSmallDataset() {
     cout << "Passed\n\n";
 }
 
-void testBasicPredictionConsistency() {
+    void testBasicPredictionConsistency() { //test if the tree stops growing given that all labels are equal
     cout << "Running test: Basic prediction consistency...\n";
 
     predictionModel model(5);  //use 5 trees for redundancy
@@ -106,13 +106,31 @@ void testBasicPredictionConsistency() {
     cout << "Passed\n";
 }
 
+void testUnseenInputBehavior() { //Test behavior for when user input is far from training data values
+    cout << "Running test: Unseen input behavior...\n";
+
+    predictionModel model(5);
+    vector<vector<float>> data = {
+        {0.0, 0.0}, {0.1, 0.1}, {0.2, 0.2}
+    };
+    vector<string> labels = {"healthy", "healthy", "healthy"};
+
+    model.trainModel(data, labels);
+
+    vector<float> newInput = {10.0, 10.0};  // Unseen, far from training data
+    string prediction = model.predict(newInput);
+
+    assert(prediction == "healthy" && "Prediction should fallback to dominant label.");
+    cout << "Passed\n";
+}
+
 
 int main() {
     testPredictOnEmptyForest();
     testTrainWithEmptyData();
     testSmallDataset();
     testBasicPredictionConsistency();
-
+    testUnseenInputBehavior();
     cout << "All manual tests passed!\n";
     return 0;
 }
